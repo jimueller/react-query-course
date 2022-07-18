@@ -4,19 +4,21 @@ import { IssueItem } from "./IssueItem";
 import fetchWithError from "../helpers/fetchWithError";
 
 export default function IssuesList({ labels, status }) {
-  const issuesQuery = useQuery(["issues", { labels, status }], () => {
+  const issuesQuery = useQuery(["issues", { labels, status }], ({ cancel }) => {
     const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
-    return fetchWithError(`/api/issues?status=${status}&${labelsString}`);
+    return fetchWithError(`/api/issues?status=${status}&${labelsString}`, {
+      cancel,
+    });
   });
 
   const [searchValue, setSearchValue] = useState("");
 
   const searchQuery = useQuery(
     ["search", "issues", searchValue],
-    () => {
-      return fetch(
-        `/api/search/issues?q=${encodeURIComponent(searchValue)}`
-      ).then((res) => res.json());
+    ({ signal }) => {
+      return fetch(`/api/search/issues?q=${encodeURIComponent(searchValue)}`, {
+        signal,
+      }).then((res) => res.json());
     },
     {
       enabled: searchValue.length > 0,

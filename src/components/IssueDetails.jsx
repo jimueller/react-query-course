@@ -5,15 +5,17 @@ import { useUserData } from "../helpers/useUserData";
 import { relativeDate } from "../helpers/relativeDate";
 
 function useIssueData(issueNumber) {
-  return useQuery(["issues", issueNumber], () => {
-    return fetch(`/api/issues/${issueNumber}`).then((res) => res.json());
+  return useQuery(["issues", issueNumber], ({ cancel }) => {
+    return fetch(`/api/issues/${issueNumber}`, { cancel }).then((res) =>
+      res.json()
+    );
   });
 }
 
 function useIssueComments(issueNumber) {
-  return useQuery(["issues", issueNumber, "comments"], () => {
-    return fetch(`/api/issues/${issueNumber}/comments`).then((res) =>
-      res.json()
+  return useQuery(["issues", issueNumber, "comments"], ({ cancel }) => {
+    return fetch(`/api/issues/${issueNumber}/comments`, { cancel }).then(
+      (res) => res.json()
     );
   });
 }
