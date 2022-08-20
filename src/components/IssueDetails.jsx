@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { IssueHeader } from "./IssueHeader";
 import { useUserData } from "../helpers/useUserData";
 import { relativeDate } from "../helpers/relativeDate";
+import IssueStatus from "./IssueStatus";
 
 function useIssueData(issueNumber) {
   return useQuery(["issues", issueNumber], ({ cancel }) => {
@@ -67,7 +68,12 @@ export default function IssueDetails() {
             ))
           )}
         </section>
-        <aside></aside>
+        <aside>
+          <IssueStatus
+            status={issueQuery.data.status}
+            issueNumber={issueQuery.data.number.toString()}
+          />
+        </aside>
       </main>
     </div>
   );
