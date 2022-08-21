@@ -12,7 +12,7 @@ export default function IssueAssignment({ assignee, issueNumber }) {
   );
   const setAssignment = useMutation(
     (assignee) => {
-      fetch(`/api/issues/${issueNumber}`, {
+      return fetch(`/api/issues/${issueNumber}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -53,7 +53,7 @@ export default function IssueAssignment({ assignee, issueNumber }) {
     <div className="issue-options">
       <div>
         <span>Assignment</span>
-        {user.isSuccess && (
+        {!!assignee && user.isSuccess && (
           <div>
             <img src={user.data.profilePictureUrl} />
             {user.data.name}
